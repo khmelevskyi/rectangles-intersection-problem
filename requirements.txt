@@ -1,0 +1,5 @@
+contourpy==1.2.1
+cycler==0.12.1
+matplotlib==3.9.0
+numpy==1.26.4
+pillow==10.3.0
