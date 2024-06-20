@@ -1,8 +1,10 @@
 from pprint import pprint
-from src.tasks_generator import StripesConstructor
+
+from src.experiments import run_experiments
 from src.random_search_algo import random_search
-from src.greedy_algo import greedy_maximum_non_overlapping_rectangles
 from src.brute_force_algo import brute_force_algo
+from src.tasks_generator import StripesConstructor
+from src.greedy_algo import greedy_maximum_non_overlapping_rectangles
 
 
 def input_rectangles_manually():
@@ -70,13 +72,6 @@ def run_algorithms(P_matrix):
     print("Maximum number of non-overlapping stripes, F:", F)
     print()
 
-def generate_and_run_experiments(num_experiments, n_stripes, max_x, max_y):
-    for i in range(num_experiments):
-        print(f"Experiment {i+1}:")
-        stripes_constructor = StripesConstructor(n_stripes, max_x, max_y)
-        rectangles, P_matrix = stripes_constructor.generate_rects_and_P_matrix()
-        stripes_constructor.visualize_rectangles()
-        run_algorithms(P_matrix)
 
 def main():
     print("Main Menu:")
@@ -86,7 +81,7 @@ def main():
                         "2 - Generate random rectangles\n"\
                         "3 - Display the conditions of the task\n"\
                         "4 - Run all algorithms\n"\
-                        "5 - Run experiments with multiple StripeConstructors\n"\
+                        "5 - Run experiments\n"\
                         "0 - Exit\n"\
                         "-----\n"\
                         "Your choice: ")
@@ -114,7 +109,8 @@ def main():
             max_x = int(input("Enter the maximum x value (skip for default = 100): ") or 100)
             max_y = int(input("Enter the maximum y value (skip for default = 100): ") or 100)
             stripes_constructor = StripesConstructor(n, max_x, max_y)
-            P_matrix = stripes_constructor.generate_indiv_task(mode="full")
+            stripes_constructor.generate_random_rectangles()
+            P_matrix = stripes_constructor.construct_P_matrix()
         
         elif choice == '3': # display
             if 'stripes_constructor' in locals():
@@ -133,11 +129,7 @@ def main():
                 print("No rectangles have been generated or input yet. Please input or generate rectangles first.")
 
         elif choice == '5': # experiments
-            num_experiments = int(input("Enter the number of experiments: "))
-            n_stripes = int(input("Enter the number of rectangles for each experiment: "))
-            max_x = int(input("Enter the maximum x value: "))
-            max_y = int(input("Enter the maximum y value: "))
-            generate_and_run_experiments(num_experiments, n_stripes, max_x, max_y)
+            run_experiments()
 
         elif choice == '0':
             print("Exiting...")

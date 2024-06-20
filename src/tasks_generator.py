@@ -103,30 +103,38 @@ class StripesConstructor:
                 else:
                     self.P_matrix[i][j] = -1
         return self.P_matrix
+    
+    @classmethod
+    def generate_P_matrix_with_known_F(cls, n_stripes, bottom_fill=0.6, upper_fill=0.9):
+        min_ones = int(bottom_fill * n_stripes) 
+        max_ones = int(upper_fill * n_stripes) 
+        num_ones = np.random.randint(min_ones, max_ones + 1) 
+    
+        X_opt = np.array([1] * num_ones + [0] * (n_stripes - num_ones)) 
+        np.random.shuffle(X_opt) 
+    
+        P = np.zeros((n_stripes, n_stripes), dtype=int) 
+    
+        for i in range(n_stripes): 
+            for j in range(i+1, n_stripes): 
+                if X_opt[i] == 1 and X_opt[j] == 1: 
+                    P[i][j] = 0 
+                else: 
+                    P[i][j] = np.random.choice([0, 1], p=[0.3, 0.7]) 
+    
+                P[j][i] = P[i][j] 
+    
+        X_opt = X_opt.tolist() 
+        return P, np.sum(X_opt)
 
-    def generate_indiv_task(self, mode='full'):
-        """
-        Main function to execute a generation of stripes and P_matrix.
-
-        This function is designed to generate stripe (rectangle) coordinates and construct the P_matrix
-        based on the specified mode. The function accepts a single argument `mode`, which
-        determines the method of generation and construction. The default value for `mode`
-        is `'fast'`.
-
-        Args:
-            mode (str, optional): Specifies the generation mode.
-                - 'full': Generates rectangle coordinates and constructs the P_matrix from these coordinates.
-                - 'fast': Directly generates a random P_matrix without generating rectangle coordinates (default).
-                - 'known_solution': Generates a P_matrix such that the solution is known and optimal.
-        """
-        if mode == "full":
-            self.generate_random_rectangles()
-            self.construct_P_matrix()
-        elif mode == "fast":
-            pass
-        elif mode == "known_solution":
-            pass
-        return self.P_matrix
+    @classmethod
+    def generate_random_P_matrix(cls, n_stripes):
+        P_matrix = [[0]*n_stripes for _ in range(n_stripes)]
+        for i in range(n_stripes):
+            for j in range(i+1, n_stripes):
+                P_matrix[i][j] = np.random.choice([0, 1])
+                P_matrix[j][i] = P_matrix[i][j]
+        return P_matrix
 
 
 
@@ -137,10 +145,10 @@ if __name__ == "__main__":
     max_y = 100
 
     stripes_constructor = StripesConstructor(n, max_x, max_y)
-    rectangles, P_matrix = stripes_constructor.generate_rects_and_P_matrix()
+    rectangles = stripes_constructor.generate_random_rectangles()
+    P_matrix = stripes_constructor.construct_P_matrix()
 
     print("number of rectangles:", n)
-    print("number of non-intersecting rectangles:", stripes_constructor.n_non_intersecting)
     for rect_ii in rectangles:
         print(f"Rectangle{rect_ii} points: {rectangles[rect_ii]}")
     print()

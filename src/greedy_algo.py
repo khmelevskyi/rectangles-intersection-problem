@@ -1,10 +1,7 @@
 import numpy as np
 
-from src.utils import track_time
 
-
-@track_time
-def greedy_maximum_non_overlapping_rectangles(P, iteration_callback):
+def greedy_maximum_non_overlapping_rectangles(P):
     n = len(P)
     X = [0] * n  # This will be our solution vector
 
@@ -15,7 +12,6 @@ def greedy_maximum_non_overlapping_rectangles(P, iteration_callback):
     overlaps.sort() # n*logn
 
     for _, i in overlaps:
-        iteration_callback() # track iteration function from track_time
 
         # Check if adding this rectangle would cause any conflict
         can_add = True

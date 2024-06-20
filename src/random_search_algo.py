@@ -1,7 +1,6 @@
 import numpy as np
 
-from src.utils import track_time
-
+from src.tasks_generator import StripesConstructor
 
 def generate_random_solution(n):
     """Генерація випадкового вектора розмірності n, де кожен елемент може бути 0 або 1"""
@@ -21,14 +20,12 @@ def evaluate_solution(x):
     """Обчислення кількості одиниць у векторі x"""
     return np.sum(x)
 
-@track_time
-def random_search(n, P, N, iteration_callback):
+def random_search(n, P, N):
     """Алгоритм випадкового пошуку"""
     best_solution = None
     best_f = 0
     
     for _ in range(N):
-        iteration_callback() # track iteration function from track_time
 
         x = generate_random_solution(n)
         if is_valid_solution(x, P):
@@ -39,3 +36,19 @@ def random_search(n, P, N, iteration_callback):
                 
     return best_solution, best_f
 
+def random_search_for_experiment(n, P):
+    x = generate_random_solution(n)
+    if is_valid_solution(x, P):
+        f = evaluate_solution(x)
+    else:
+        f = None
+    return f
+
+
+
+if __name__ == "__main__":
+    n_stripes = 10  # розмірність задачі (кількість смуг)
+    N = 20000  # Загальна кількість ітерацій
+    P_matrix = StripesConstructor.generate_random_P_matrix(n_stripes)
+    bs, bf = random_search(n_stripes, P_matrix, N)
+    print(bf)

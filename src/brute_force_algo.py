@@ -1,8 +1,4 @@
-from src.utils import track_time
-
-
-@track_time
-def brute_force_algo(P, iteration_callback):
+def brute_force_algo(P):
     n = len(P)
     
     def is_valid_subset(subset):
@@ -16,7 +12,6 @@ def brute_force_algo(P, iteration_callback):
     best_subset = None
     
     for i in range(2**n):
-        iteration_callback() # track iteration function from track_time
 
         binary_str = bin(i)[2:].zfill(n) # remove '0b' prefix and fill the binary with zeros
         subset = [int(bit) for bit in binary_str]
