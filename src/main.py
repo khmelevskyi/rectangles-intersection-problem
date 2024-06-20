@@ -1,10 +1,10 @@
 from pprint import pprint
 
 from src.experiments import run_experiments
-from src.random_search_algo import random_search
-from src.brute_force_algo import brute_force_algo
 from src.tasks_generator import StripesConstructor
-from src.greedy_algo import greedy_maximum_non_overlapping_rectangles
+from src.algos import greedy_maximum_non_overlapping_rectangles,\
+                      random_search, genetic_algorithm,\
+                      brute_force_algo
 
 
 def input_rectangles_manually():
@@ -43,12 +43,23 @@ def read_rectangles_from_file(file_path):
         for line in file:
             rect_str = line.strip()
             rect = [tuple(map(int, point.strip().strip('()').split(','))) for point in rect_str.split('), (')]
-            rectangles[i] = rect
-            i += 1
+            if len(rect) == 4:
+                rectangles[i] = rect
+                i += 1
+            else:
+                print("Invalid input. Please enter the coordinates in the correct format and ensure each rectangle has exactly 4 corners.")
+                break
     return rectangles
 
 def run_algorithms(P_matrix):
     print()
+    # Brute force
+    print("Brute Force Algorithm:")
+    X, F = brute_force_algo(P_matrix)
+    print("Best solution, X vector:", X)
+    print("Maximum number of non-overlapping stripes, F:", F)
+    print()
+
     # Greedy algorithm
     print("Greedy Algorithm:")
     X, F = greedy_maximum_non_overlapping_rectangles(P_matrix)
@@ -58,16 +69,19 @@ def run_algorithms(P_matrix):
 
     # Random search
     n = len(P_matrix)  # number of stripes
-    N = 100000  # number of iterations
+    N = 10000  # number of iterations
     print("Random Search Algorithm:")
     X, F = random_search(n, P_matrix, N)
     print("Best solution, X vector:", X)
     print("Maximum number of non-overlapping stripes, F:", F)
     print()
 
-    # Brute force
-    print("Brute Force Algorithm:")
-    X, F = brute_force_algo(P_matrix)
+    # Genetic algorithm
+    n = len(P_matrix)  # number of stripes
+    pop_size = 100  # population size
+    N = 100 # number of generations
+    print("Genetic Algorithm:")
+    X, F = genetic_algorithm(P_matrix, pop_size, N)
     print("Best solution, X vector:", X)
     print("Maximum number of non-overlapping stripes, F:", F)
     print()

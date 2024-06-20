@@ -1,8 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
 
-from src.random_search_algo import random_search_for_experiment, random_search
 from src.tasks_generator import StripesConstructor
+from src.algos import random_search_for_experiment
 
 
 def random_search_experiment(n_stripes, N, L):
@@ -15,10 +14,13 @@ def random_search_experiment(n_stripes, N, L):
 
         P_matrix, known_F = StripesConstructor.generate_P_matrix_with_known_F(n_stripes)
         print(known_F)
-        for j in range(1000, N, 10000):
+        best_value = 0
+        for j in range(N):
             # Виклик функції random_search()
-            best_solution, best_value = random_search(n_stripes, P_matrix, j)
+            current_value = random_search_for_experiment(n_stripes, P_matrix)
 
+            if current_value is not None and current_value > best_value:
+                best_value = current_value
             BF[i].append(best_value)
             iterations[i].append(j)
 
@@ -33,15 +35,8 @@ def random_search_experiment(n_stripes, N, L):
         axes[i].set_ylabel('Best Value')
         axes[i].legend()
 
-    plt.savefig('src/results/random_search_experiment_results.png')
+    plt.grid(True)
     plt.show()
+    plt.savefig('src/results/random_search_experiment_results.png')
 
     return BF
-
-def run_experiments():
-    # 1st experiment - Random search
-    n_stripes = 20  # розмірність задачі (кількість смуг)
-    N = 200000  # Загальна кількість ітерацій
-    L = 5  # кількість прогонів для одного значення N або кількість ІЗ
-
-    BF = random_search_experiment(n_stripes, N, L)

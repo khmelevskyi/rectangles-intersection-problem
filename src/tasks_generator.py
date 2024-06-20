@@ -136,6 +136,25 @@ class StripesConstructor:
                 P_matrix[j][i] = P_matrix[i][j]
         return P_matrix
 
+    @classmethod
+    def generate_random_P_with_percentage(cls, n_stripes, percentage): 
+        P_matrix = [[0] * n_stripes for _ in range(n_stripes)] 
+        num_upper_triangle_elements = n_stripes * (n_stripes - 1) // 2 
+        num_ones = int(percentage * num_upper_triangle_elements) 
+    
+        # Create a list of indices for the upper triangle elements 
+        upper_triangle_indices = [(i, j) for i in range(n_stripes) for j in range(i + 1, n_stripes)] 
+        
+        # Randomly select indices to be set to 1 
+        ones_indices = random.sample(upper_triangle_indices, num_ones) 
+        
+        for i, j in ones_indices: 
+            P_matrix[i][j] = 1 
+            P_matrix[j][i] = 1  # Ensure symmetry 
+        
+        return P_matrix
+
+
 
 
 if __name__ == "__main__":
