@@ -10,4 +10,4 @@ def track_time(func, *args):
     if result is not None:
         return *result, elapsed_time
     else:
-        elapsed_time
+        return elapsed_time
