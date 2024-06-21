@@ -36,15 +36,7 @@ class UniqueRandom:
         return nums
 
     def remove_option(self, num):
-        self.numbers.remove(num);
-
-def generateRandomP(n):
-    P = [[0]*n for _ in range(n)]
-    for i in range(n):
-        for j in range(i + 1, n):
-            P[i][j] = random.choice([0, 1])
-            P[j][i] = P[i][j]
-    return P
+        self.numbers.remove(num)
 
 def fitness(X, P):
     if is_valid_solution(X, P):
@@ -171,9 +163,3 @@ def genetic_algorithm(P, pop_size=4, generations=1, mutation_rate=0.01):
     return best_solution, best_fitness
 
 
-#n = 30
-#P = generateRandomP(n)
-
-#best_solution, best_fitness = genetic_algorithm(P)
-#print("Best solution:", best_solution)
-#print("Maximum number of non-overlapping rectangles:", best_fitness)
