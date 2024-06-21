@@ -20,7 +20,7 @@ def comparison_time_experiment():
     t = 3 # кількість особин, що беруть участь у кожному турнірі ГА
     mp = 0.01 # вірогідність мутації біту у векторі рішень в ГА
 
-    n_stripes_array = [5,10,15,20,25,30,35] #,40,45,50]
+    n_stripes_array = [10,15,20,25,30,35,40,45,50]
 
     T_greedy = [None for _ in range(len(n_stripes_array))]
     T_random = [None for _ in range(len(n_stripes_array))]
@@ -102,7 +102,7 @@ def comparison_precise_experiment():
     t = 3 # кількість особин, що беруть участь у кожному турнірі ГА
     mp = 0.01 # вірогідність мутації біту у векторі рішень в ГА
 
-    n_stripes_array = [5,10,15,20,25,30,35,40,45,50]
+    n_stripes_array = [10,15,20,25,30,35,40,45,50]
 
     avg_deviations_greedy = [None for _ in range(len(n_stripes_array))]
     avg_deviations_random = [None for _ in range(len(n_stripes_array))]

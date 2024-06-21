@@ -9,7 +9,7 @@ def greedy_maximum_non_overlapping_rectangles(P):
     overlaps = [(sum(P[i]), i) for i in range(n)]
 
     # Sort rectangles by the number of overlaps (increasing)
-    overlaps.sort() # n*logn
+    overlaps.sort() # O(n*logn)
 
     for _, i in overlaps:
 
@@ -24,5 +24,6 @@ def greedy_maximum_non_overlapping_rectangles(P):
             X[i] = 1
 
     return X, np.sum(X)
-# n2 * logn
+
+# O(n2)
 

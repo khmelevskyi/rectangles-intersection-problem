@@ -1,4 +1,5 @@
 from src.utils import track_time
+from src.experiments.bfs_exp import bfs_experiment
 from src.experiments.genetic_exp import genetic_algo_experiment
 from src.experiments.random_search_exp import random_search_experiment
 from src.experiments.comparison_exps import comparison_precise_experiment,\
@@ -18,10 +19,7 @@ def run_experiments():
     
     # 1st experiment - Random search
     if exp_choice == "1":
-        n_stripes = 25  # розмірність задачі (кількість смуг)
-        N = 200000  # Загальна кількість ітерацій
-        L = 5  # кількість прогонів для одного значення N або кількість ІЗ
-        random_search_experiment(n_stripes, N, L)
+        random_search_experiment()
     
     elif exp_choice == "2":
         # 2nd experiment - Genetic algo
@@ -29,7 +27,7 @@ def run_experiments():
 
     elif exp_choice == "3":
         #3rd experiment - BFS algo
-        pass
+        bfs_experiment()
     
     elif exp_choice == "4":
         # 4th experiment - General (time)

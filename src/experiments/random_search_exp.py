@@ -4,7 +4,11 @@ from src.tasks_generator import StripesConstructor
 from src.algos import random_search_for_experiment
 
 
-def random_search_experiment(n_stripes, N, L):
+def random_search_experiment():
+    n_stripes = 25  # розмірність задачі (кількість смуг)
+    N = 200000  # Загальна кількість ітерацій
+    L = 5  # кількість прогонів для одного значення N або кількість ІЗ
+    
     BF = {}  # Массив для збереження кращих значень ЦФ
     iterations = {}
 
