@@ -12,13 +12,14 @@ def run_experiments():
                         "3 - BFS experiment\n"\
                         "4 - Comparison experiment (time)\n"\
                         "5 - Comparison experiment (precise/deviation)\n"\
+                        "0 - Exit\n"\
                         "-----\n"\
                         "Your choice: ")
     
     # 1st experiment - Random search
     if exp_choice == "1":
-        n_stripes = 20  # розмірність задачі (кількість смуг)
-        N = 20000  # Загальна кількість ітерацій
+        n_stripes = 25  # розмірність задачі (кількість смуг)
+        N = 200000  # Загальна кількість ітерацій
         L = 5  # кількість прогонів для одного значення N або кількість ІЗ
         random_search_experiment(n_stripes, N, L)
     
@@ -39,3 +40,10 @@ def run_experiments():
         # 5th experiment - General (precise/deviation)
         total_consumed_time = track_time(comparison_precise_experiment)
         print(f"Total consumed time for the comparison precise (deviation) experiment: {int(total_consumed_time)} seconds")
+    
+    elif exp_choice == '0':
+        print("Exiting...")
+        exit()
+
+    else:
+        print("Invalid choice. Please try again.")

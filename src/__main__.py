@@ -4,7 +4,7 @@ from src.experiments import run_experiments
 from src.tasks_generator import StripesConstructor
 from src.algos import greedy_maximum_non_overlapping_rectangles,\
                       random_search, genetic_algorithm,\
-                      brute_force_algo
+                      bfs_search
 
 
 def input_rectangles_manually():
@@ -53,9 +53,9 @@ def read_rectangles_from_file(file_path):
 
 def run_algorithms(P_matrix):
     print()
-    # Brute force
-    print("Brute Force Algorithm:")
-    X, F = brute_force_algo(P_matrix)
+    # BFS algo
+    print("BFS Algorithm:")
+    X, F = bfs_search(P_matrix)
     print("Best solution, X vector:", X)
     print("Maximum number of non-overlapping stripes, F:", F)
     print()
@@ -104,13 +104,19 @@ def main():
             input_manually_choice_2 = input("\n"\
                                             "1 - Input rectangles manually in terminal\n"\
                                             "2 - Read rectangle coordinates from the file\n"\
+                                            "0 - Exit\n"\
                                             "-----\n"\
                                             "Your choice: ")
             if input_manually_choice_2 == "1":
                 rectangles = input_rectangles_manually()
-            else:
+            elif input_manually_choice_2 == "2":
                 file_path = input("Input the file name (skip for default = 'input_rectangles.txt'): ") or "input_rectangles.txt"
                 rectangles = read_rectangles_from_file("src/data/" + file_path)
+            elif input_manually_choice_2 == '0':
+                print("Exiting...")
+                exit()
+            else:
+                print("Invalid choice. Please try again.")
             n = len(rectangles)
             print(rectangles.items())
             max_x = max(max(rect, key=lambda x: x[0])[0] for rect in rectangles.values())

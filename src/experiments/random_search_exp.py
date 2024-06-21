@@ -12,8 +12,8 @@ def random_search_experiment(n_stripes, N, L):
         BF[i] = []
         iterations[i] = []
 
-        P_matrix, known_F = StripesConstructor.generate_P_matrix_with_known_F(n_stripes)
-        print(known_F)
+        P_matrix = StripesConstructor.generate_random_P_matrix(n_stripes)
+        # print(known_F)
         best_value = 0
         for j in range(N):
             # Виклик функції random_search()
@@ -25,18 +25,15 @@ def random_search_experiment(n_stripes, N, L):
             iterations[i].append(j)
 
     # Побудова графіків
-    fig, axes = plt.subplots(1, L, figsize=(15, L))
-    fig.tight_layout(pad=3.0)
-
+    _, axes = plt.subplots(1, L, figsize=(15, L))
     for i in range(L):
         axes[i].plot(iterations[i], BF[i])
         axes[i].set_title(f'Run {i+1}')
         axes[i].set_xlabel('Iterations')
         axes[i].set_ylabel('Best Value')
-        axes[i].legend()
+        axes[i].grid(True)
 
-    plt.grid(True)
+    plt.savefig('src/results/random_search_experiment.png')
     plt.show()
-    plt.savefig('src/results/random_search_experiment_results.png')
 
     return BF

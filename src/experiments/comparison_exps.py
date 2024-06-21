@@ -4,12 +4,12 @@ from src.utils import track_time
 from src.tasks_generator import StripesConstructor
 from src.algos import greedy_maximum_non_overlapping_rectangles,\
                       random_search, genetic_algorithm,\
-                      brute_force_algo
+                      bfs_search
 
 
 def comparison_time_experiment():
     L = 20 # Кількість прогонів або згенерованих ІЗ для одного значення n
-    H = 22 # Кількість прогонів, після якої АПП не буде використовуватися
+    H = 22 # Кількість смужок, після якої АПП не буде використовуватися
 
     # Параметри алгоритмів
     N = 20000 # Загальна кількість ітерацій для АВП
@@ -20,20 +20,21 @@ def comparison_time_experiment():
     t = 3 # кількість особин, що беруть участь у кожному турнірі ГА
     mp = 0.01 # вірогідність мутації біту у векторі рішень в ГА
 
-    n_stripes_array = [5,10,15,20,25,30,35,40,45,50]
+    n_stripes_array = [5,10,15,20,25,30,35] #,40,45,50]
 
     T_greedy = [None for _ in range(len(n_stripes_array))]
     T_random = [None for _ in range(len(n_stripes_array))]
     T_genetic = [None for _ in range(len(n_stripes_array))]
     T_BFS = [None for _ in range(len(n_stripes_array))]
-
     
     for i, n_stripes in enumerate(n_stripes_array):
+        print(f"Iteration {i} | {n_stripes} stripes")
         t_greedy = 0
         t_random = 0
         t_genetic = 0
         t_BFS = 0
-        for _ in range(L):
+        for j in range(L):
+            print(f"Run {j}")
             P_matrix = StripesConstructor.generate_random_P_matrix(n_stripes)
 
             _, _, t = track_time(greedy_maximum_non_overlapping_rectangles, P_matrix)
@@ -46,7 +47,7 @@ def comparison_time_experiment():
             t_genetic += t
 
             if n_stripes <= H:
-                _, _, t = track_time(brute_force_algo, P_matrix)
+                _, _, t = track_time(bfs_search, P_matrix)
                 t_BFS += t
 
         T_greedy[i] = t_greedy / L
@@ -55,15 +56,12 @@ def comparison_time_experiment():
         if n_stripes <= H:
             T_BFS[i] = t_BFS / L
 
-
     # Побудова графіків
     algos_Ts = [T_greedy, T_random, T_genetic, T_BFS]
     algos_names = ["Greedy", "Random search", "Genetic", "BFS"]
     color_map = ["red", "green", "blue", "orange"]
     
-    fig, axes = plt.subplots(1, len(algos_Ts), figsize=(15, len(algos_Ts)))
-    fig.tight_layout(pad=3.0)
-
+    _, axes = plt.subplots(1, len(algos_Ts), figsize=(15, len(algos_Ts)))
     for i, algo_T in enumerate(algos_Ts):
         axes[i].plot(n_stripes_array, algo_T)
         axes[i].set_title(algos_names[i])
@@ -71,11 +69,10 @@ def comparison_time_experiment():
         axes[i].set_xlabel('Number of stripes')
         axes[i].set_ylabel('Time Consumed')
         axes[i].grid(True)
+    plt.savefig('src/results/comparison_time_experiment_4_graphics.png')
     plt.show()
 
-    fig, axes = plt.subplots(1, 2, figsize=(15, 6))
-    fig.tight_layout(pad=3.0)
-
+    _, axes = plt.subplots(1, 2, figsize=(15, 6))
     for i in range(2):
         if i == 1:
             algos_Ts.remove(T_BFS)
@@ -88,6 +85,7 @@ def comparison_time_experiment():
         axes[i].set_title('Time Consumed vs Number of stripes')
         axes[i].grid(True)
         axes[i].legend()
+    plt.savefig('src/results/comparison_time_experiment_2_graphics.png')
     plt.show()
 
 
@@ -135,7 +133,7 @@ def comparison_precise_experiment():
             sum_deviations_genetic += deviation
 
             if n_stripes <= H:
-                _, F = brute_force_algo(P_matrix)
+                _, F = bfs_search(P_matrix)
                 # print(F)
                 deviation = abs(F - known_F) / known_F
                 sum_deviations_BFS += deviation
@@ -146,15 +144,12 @@ def comparison_precise_experiment():
         if n_stripes <= H:
             avg_deviations_BFS[i] = sum_deviations_BFS / L
 
-
     # Побудова графіків
     algos_Ts = [avg_deviations_greedy, avg_deviations_random, avg_deviations_genetic, avg_deviations_BFS]
     algos_names = ["Greedy", "Random search", "Genetic", "BFS"]
     color_map = ["red", "green", "blue", "orange"]
     
-    fig, axes = plt.subplots(1, len(algos_Ts), figsize=(15, len(algos_Ts)))
-    fig.tight_layout(pad=3.0)
-
+    _, axes = plt.subplots(1, len(algos_Ts), figsize=(15, len(algos_Ts)))
     for i, algo_T in enumerate(algos_Ts):
         axes[i].plot(n_stripes_array, algo_T)
         axes[i].set_title(algos_names[i])
@@ -162,6 +157,7 @@ def comparison_precise_experiment():
         axes[i].set_xlabel('Number of stripes')
         axes[i].set_ylabel('Average Deviation')
         axes[i].grid(True)
+    plt.savefig('src/results/comparison_precise_experiment_4_graphics.png')
     plt.show()
 
     for j, algo_T in enumerate(algos_Ts):
@@ -172,4 +168,5 @@ def comparison_precise_experiment():
     plt.title('Average Deviation vs Number of stripes')
     plt.grid(True)
     plt.legend()
+    plt.savefig('src/results/comparison_precise_experiment_1_graphic.png')
     plt.show()

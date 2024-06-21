@@ -62,7 +62,7 @@ Additionally, experiments will be conducted to evaluate the performance of these
 To start the main menu do:
 
 ```
-python -m src.main
+python -m src
 ```
 
 
